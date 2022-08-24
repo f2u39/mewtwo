@@ -3,8 +3,8 @@
 Gonna learn [Event-Driven Architecture with React and FastAPI – Full Course](https://www.youtube.com/watch?v=NVvIpqmf_Xc&t=1540s&ab_channel=freeCodeCamp.org)
 
 ## Course code
-[Front](https://github.com/scalablescripts/react-event-driven)
-[Back](https://github.com/scalablescripts/fast-api-event-driven)
+- [Front](https://github.com/scalablescripts/react-event-driven)
+- [Back](https://github.com/scalablescripts/fast-api-event-driven)
 
 ## Env
 ```
@@ -37,6 +37,7 @@ Mehtod: POST
 URL: http://localhost:8000/deliveries/create
 Body: 
 {
+    "type": "CREATE_DELIVERY",
     "data": {
         "budget": 150000,
         "notes": "iPhone 14 Pro"
