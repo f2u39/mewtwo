@@ -1,3 +1,3 @@
 # Mewtwo
 
-Some demos.
+Some demos(実験).
