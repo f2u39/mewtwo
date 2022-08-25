@@ -39,7 +39,8 @@ class Event(HashModel):
 async def create(request: Request):
     body = await request.json()
     delivery = Delivery(budget=body['data']['budget'], notes=body['data']['notes']).save()
-    return delivery
+    event = Event(delivery_id=delivery.pk, type=body['type'], data=json.dumps(body['data']))
+    return event
 
 # @app.get('/deliveries/{pk}/status')
 # async def get_state(pk: str):
