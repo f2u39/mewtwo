@@ -35,25 +35,23 @@ func (s *Server) checkin(conn net.Conn) {
 	s.Users[addr] = u
 	s.Lock.Unlock()
 
-	s.Broadcast("welcome", u)
+	s.Broadcast("welcome" + u.Addr)
 	fmt.Println("UserMap", s.Users)
 }
 
 func (s *Server) ReceiveMsg() {
-	for {
-		msg := <-s.MsgCh
-
-		s.Lock.Lock()
-		for _, cli := range s.Users {
-			cli.MsgCh <- msg
-		}
-		s.Lock.Unlock()
-	}
+	msg := <-s.MsgCh
+	s.Broadcast(msg)
 }
 
-func (s *Server) Broadcast(msg string, user *user.User) {
-	m := user.Addr + ": " + msg
-	s.MsgCh <- m
+func (s *Server) Broadcast(msg string) {
+	b := []byte(msg)
+
+	s.Lock.Lock()
+	for _, user := range s.Users {
+		user.Conn.Write(b)
+	}
+	s.Lock.Unlock()
 }
 
 func (s *Server) Start() {
@@ -63,8 +61,6 @@ func (s *Server) Start() {
 	}
 	defer lis.Close()
 
-	go s.ReceiveMsg()
-
 	for {
 		conn, err := lis.Accept()
 		if err != nil {
@@ -73,5 +69,7 @@ func (s *Server) Start() {
 		}
 
 		go s.checkin(conn)
+
+		go s.ReceiveMsg()
 	}
 }

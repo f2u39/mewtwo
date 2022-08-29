@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 	"net"
+	"os"
+	"strconv"
 )
 
 const (
@@ -23,5 +25,30 @@ func main() {
 		return
 	}
 
-	conn.SetKeepAlive(false)
+	sendMsg(conn, "hello from client")
+
+	for {
+		if receiveMsg(conn) != nil {
+			return
+		}
+	}
+}
+
+func sendMsg(conn *net.TCPConn, msg string) {
+	_, err := conn.Write([]byte("hello from " + strconv.Itoa(os.Getpid())))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
+func receiveMsg(conn *net.TCPConn) error {
+	msg := make([]byte, 1024)
+	_, err := conn.Read(msg)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	println(string(msg))
+	return nil
 }
