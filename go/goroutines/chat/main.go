@@ -9,5 +9,5 @@ const (
 
 func main() {
 	srv := server.NewServer(ip, port)
-	srv.Start()
+	srv.Serve()
 }
