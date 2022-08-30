@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"log"
 	"net"
 	"os"
-	"strconv"
+	"strings"
 )
 
 const (
@@ -13,6 +15,12 @@ const (
 )
 
 func main() {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Welcome to Disgord! Plz input your name:")
+	fmt.Println("----------------------------------------")
+	name, _ := reader.ReadString('\n')
+	name = strings.Replace(name, "\n", "", -1)
+
 	addr, err := net.ResolveTCPAddr("tcp", ip+port)
 	if err != nil {
 		log.Println("failed to resolce tcp address", err)
@@ -25,7 +33,7 @@ func main() {
 		return
 	}
 
-	sendMsg(conn, "hello from client")
+	sendMsg(conn, "!name="+name)
 
 	for {
 		if receiveMsg(conn) != nil {
@@ -35,7 +43,7 @@ func main() {
 }
 
 func sendMsg(conn *net.TCPConn, msg string) {
-	_, err := conn.Write([]byte("hello from " + strconv.Itoa(os.Getpid())))
+	_, err := conn.Write([]byte(msg))
 	if err != nil {
 		log.Println(err)
 		return

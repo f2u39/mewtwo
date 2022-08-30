@@ -9,67 +9,54 @@ import (
 )
 
 type Server struct {
-	Ip   string
-	Port int
+	ip   string
+	port int
 
-	Lock  sync.RWMutex
-	Users map[string]*user.User
-	MsgCh chan string
+	// A channel for holds incoming messages
+	messages chan []byte
+
+	// A map holds all users in the server
+	users map[*user.User]bool
+
+	// A channel for user checkin the server
+	checkin chan *user.User
+
+	// A channel for user checkout the server
+	checkout chan *user.User
 }
 
 func NewServer(ip string, port int) *Server {
 	return &Server{
-		Ip:    ip,
-		Port:  port,
-		Users: make(map[string]*user.User),
-		MsgCh: make(chan string),
+		ip:    ip,
+		port:  port,
+		messages: make(chan []byte),
+		users: make(map[*user.User]bool),
+		checkin: make(chan *user.User),
+		checkout: make(chan *user.User),
 	}
-}
-
-func (s *Server) checkin(conn net.Conn) {
-	addr := conn.RemoteAddr().String()
-
-	u := user.NewUser(conn)
-
-	s.Lock.Lock()
-	s.Users[addr] = u
-	s.Lock.Unlock()
-
-	s.Broadcast("welcome" + u.Addr)
-	fmt.Println("UserMap", s.Users)
-}
-
-func (s *Server) ReceiveMsg() {
-	msg := <-s.MsgCh
-	s.Broadcast(msg)
-}
-
-func (s *Server) Broadcast(msg string) {
-	b := []byte(msg)
-
-	s.Lock.Lock()
-	for _, user := range s.Users {
-		user.Conn.Write(b)
-	}
-	s.Lock.Unlock()
 }
 
 func (s *Server) Start() {
-	lis, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", s.Ip, s.Port))
+	lis, err := net.Listen("tcp4", fmt.Sprintf("%s:%d", s.ip, s.port))
 	if err != nil {
-		fmt.Println("listen failed...")
+		fmt.Println(err)
 	}
 	defer lis.Close()
 
 	for {
+		select {
+		case u := <-s.checkin:
+			s.users[]
+		}
+
 		conn, err := lis.Accept()
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
-		go s.checkin(conn)
-
+		go s.Checkin(conn)
 		go s.ReceiveMsg()
+		go s.PublishMsg()
 	}
 }
