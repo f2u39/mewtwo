@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 export default function useEffectExample() {
-    const [console, setConsole] = useState("Xbox");
+    const [console, setConsole] = useState("PS5");
 
     useEffect(()=> {
         const interval = setInterval(() => {
-            setConsole("PS5");
+            setConsole("Xbox");
           }, 1000);
     }, [])
 
