@@ -1,14 +1,14 @@
 /* 1 */
 :root {
     --font-color: pink;
-    --background-color: pink;
+    --background-color: grey;
     --link-color: pink;
 }
 
 /* 2 */
 [data-theme="dark"] {
     --font-color: purple;
-    --background-color: purple;
+    --background-color: black;
     --link-color: purple;
 }
 
