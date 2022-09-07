@@ -14,7 +14,8 @@ function App() {
         }}
       >
         <Link to="/useState">UseState</Link> |{" "}
-        <Link to="/useEffect">UseEffect</Link>
+        <Link to="/useEffect">UseEffect</Link> |{" "}
+        <Link to="/useContext">UseContext</Link>
       </nav>
       </header>
     </div>

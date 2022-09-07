@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import UseStateExample from './routes/useState';
 import UseEffectExample from './routes/useEffect';
+import UseContextExample from './routes/useContext';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -17,6 +18,7 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/useState" element={<UseStateExample />} />
         <Route path="/useEffect" element={<UseEffectExample />} />
+        <Route path="/useContext" element={<UseContextExample />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
