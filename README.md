@@ -1,6 +1,6 @@
 # Mewtwo
 
-Some demos(実験).
+Some demos.
 
 ## Status
 
