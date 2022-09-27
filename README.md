@@ -1,7 +1,10 @@
 # Mewtwo
 
-Some demos.
+Some demos(実験).
 
 ## Status
 
-Aug 5, 2022 🟢Running
+| Date | Status |
+| --- | --- |
+| Aug 5, 2022 | ⚪️ |
+| Aug 5, 2022 | 🟢 |
